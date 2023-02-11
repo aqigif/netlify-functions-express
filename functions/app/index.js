@@ -5,10 +5,7 @@ import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import customLogger from '../utils/logger'
-const axios = require('axios');
-
-require('dotenv').config();
-const apiKey = process.env.API_KEY;
+import axios from 'axios';
 
 /* My express App */
 export default function expressApp(functionName) {
@@ -88,7 +85,8 @@ export default function expressApp(functionName) {
   })
 
 
-app.get('/maps/:place_id', (req, res) => {
+app.get('/maps/:place_id/:key', (req, res) => {
+  const apiKey = req.params.key;
   const place_id = req.params.place_id;
   const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${apiKey}`;
 
@@ -102,10 +100,10 @@ app.get('/maps/:place_id', (req, res) => {
     });
 });
 
-app.get('/maps/photo/:maxwidth/:photoreference', (req, res) => {
+app.get('/maps/photo/:key/:photoreference', (req, res) => {
+  const apiKey = req.params.key;
   const photoreference = req.params.photoreference;
-  const maxwidth = req.params.maxwidth;
-  const apiUrl = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoreference}&maxwidth=${maxwidth}&key=${apiKey}`;
+  const apiUrl = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoreference}&maxwidth=400&key=${apiKey}`;
 
   axios.get(apiUrl, { responseType: 'arraybuffer' })
     .then((response) => {
