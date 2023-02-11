@@ -85,36 +85,36 @@ export default function expressApp(functionName) {
   })
 
 
-app.get('/maps/:place_id/:key', (req, res) => {
-  const apiKey = req.params.key;
-  const place_id = req.params.place_id;
-  const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${apiKey}`;
+  router.get('/maps/:place_id/:key', (req, res) => {
+    const apiKey = req.params.key;
+    const place_id = req.params.place_id;
+    const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${apiKey}`;
 
-  axios.get(apiUrl)
-    .then((response) => {
-      res.json(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('An error occurred while fetching data from the Google Maps API');
-    });
-});
+    axios.get(apiUrl)
+      .then((response) => {
+        res.json(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('An error occurred while fetching data from the Google Maps API');
+      });
+  });
 
-app.get('/maps/photo/:key/:photoreference', (req, res) => {
-  const apiKey = req.params.key;
-  const photoreference = req.params.photoreference;
-  const apiUrl = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoreference}&maxwidth=400&key=${apiKey}`;
+  router.get('/maps/photo/:key/:photoreference', (req, res) => {
+    const apiKey = req.params.key;
+    const photoreference = req.params.photoreference;
+    const apiUrl = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoreference}&maxwidth=400&key=${apiKey}`;
 
-  axios.get(apiUrl, { responseType: 'arraybuffer' })
-    .then((response) => {
-      res.set('Content-Type', 'image/jpeg');
-      res.send(Buffer.from(response.data, 'binary'));
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('An error occurred while fetching data from the Google Maps API');
-    });
-});
+    axios.get(apiUrl, { responseType: 'arraybuffer' })
+      .then((response) => {
+        res.set('Content-Type', 'image/jpeg');
+        res.send(Buffer.from(response.data, 'binary'));
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('An error occurred while fetching data from the Google Maps API');
+      });
+  });
 
   // Attach logger
   app.use(morgan(customLogger))
