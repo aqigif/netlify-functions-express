@@ -77,6 +77,7 @@ export default function expressApp(functionName) {
 
   router.get('/maps/', function(req, res) {
     const place_id = req.params.place_id;
+    const apiKey = req.params.key;
     const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${apiKey}`;
 
     axios.get(apiUrl)
